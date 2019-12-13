@@ -1,0 +1,26 @@
+<mat-toolbar color="accent">
+  <mat-toolbar-row>
+  <button
+    type="button"
+    aria-label="Toggle sidenav"
+    mat-icon-button
+    (click)="drawer.toggle()"
+    *ngIf="isHandset$ | async">
+    <mat-icon aria-label="Side nav toggle icon">Home</mat-icon>
+  </button>
+  <span><a class="gap" routerLink="package">Shop</a></span>
+    <span class="gap"><a routerLink="package" (click)="openSnackBar('Package is Added to Your Cart','Cart')">Packages</a></span>
+    <span class="example-fill-remaining-space"></span>
+    <mat-form-field class="font-size-32">
+      <mat-select placeholder = "Currency">
+        <mat-option value = "A">A</mat-option>
+        <mat-option value = "B">B</mat-option>
+        <mat-option value = "C">C</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span class="gap" ><a routerLink="cart"><i class="material-icons font-size-48">
+shopping_basket
+    </i>
+      <span *ngIf="totalItemsInCart>0" class='badge badge-warning' id='lblCartCount'> {{totalItemsInCart}} </span></a></span>
+  </mat-toolbar-row>
+</mat-toolbar>
