@@ -9,18 +9,18 @@
     <mat-icon aria-label="Side nav toggle icon">Home</mat-icon>
   </button>
   <span><a class="gap" routerLink="package">Shop</a></span>
-    <span class="gap"><a routerLink="package" (click)="openSnackBar('Package is Added to Your Cart','Cart')">Packages</a></span>
+    <span class="gap"><a routerLink="package">Packages</a></span>
     <span class="example-fill-remaining-space"></span>
     <mat-form-field class="font-size-32">
-      <mat-select placeholder = "Currency">
-        <mat-option value = "A">A</mat-option>
-        <mat-option value = "B">B</mat-option>
-        <mat-option value = "C">C</mat-option>
+      <mat-select placeholder = "Currency" [value]="selectedOption" (valueChange)="changeCurrentCurrency($event)">
+        <mat-option *ngFor="let currency of currencyList | keyvalue"
+                    value = "{{currency.key}}">{{currency.key}}</mat-option>
       </mat-select>
     </mat-form-field>
-    <span class="gap" ><a routerLink="cart"><i class="material-icons font-size-48">
+    &nbsp;<span class="gap" ><a routerLink="cart"><i class="material-icons font-size-48">
 shopping_basket
     </i>
       <span *ngIf="totalItemsInCart>0" class='badge badge-warning' id='lblCartCount'> {{totalItemsInCart}} </span></a></span>
+    <span *ngIf="totalValueOfCart>0">{{totalValueOfCart | currency:currentCurrency}}</span>
   </mat-toolbar-row>
 </mat-toolbar>

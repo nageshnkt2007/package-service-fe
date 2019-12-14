@@ -10,3 +10,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   max-width: 960px;
   margin: 0 auto;
 }
+.gap {
+  margin-right: 40px;
+}
+.float-right{
+  float: right;
+}
