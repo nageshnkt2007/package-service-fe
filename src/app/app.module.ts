@@ -23,6 +23,7 @@ import { CartComponent } from './cart/cart.component';
 import {MatSelect, MatSelectModule} from "@angular/material/select";
 import {MatOption, MatOptionModule} from "@angular/material/core";
 import {HttpClientModule} from "@angular/common/http";
+import {MatExpansionModule, MatExpansionPanel} from "@angular/material/expansion";
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import {HttpClientModule} from "@angular/common/http";
     MatSortModule,
     MatSelectModule,
     MatOptionModule,
-    HttpClientModule
+    HttpClientModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

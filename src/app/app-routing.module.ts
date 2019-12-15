@@ -14,7 +14,7 @@ const routes: Routes = [
     path:'package',component:PackageListComponent
   },
   {
-    path:'package/detail',component:PackageDetailComponent
+    path:'package/:id',component:PackageDetailComponent
   },
   {
     path:'cart',component:CartComponent

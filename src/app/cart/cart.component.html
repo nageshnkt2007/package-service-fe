@@ -1,20 +1,31 @@
 <div class="content-center">
   <div>
-    <div *ngIf="itemsInCart.length<1" class="mar-top20">There are no items in your cart, Please add some items to Checkout!</div>
+    <div *ngIf="itemsInCart.length<1" class="mar-top20">There are no items in your cart, Please add some items to
+      Checkout!
+    </div>
     <mat-list *ngIf="itemsInCart.length>0">
       <h3 matSubheader>Packages</h3>
       <mat-list-item *ngFor="let packg of itemsInCart">
         <mat-icon matListIcon>dashboard</mat-icon>
         <h4 matLine>{{packg.name}}  <p class="demo-2"> {{packg.totalPrice| currency:currentCurrency}} </p></h4>
         <mat-divider></mat-divider>
-        <mat-list-item *ngFor="let product of packg.products">
-          <h3 matSubheader>Products</h3>
+        <mat-list-item>
+          <h3 matSubheader>Products: <span *ngFor="let product of packg.products;let i = index">{{product.name}}</span>
+            <i *ngIf="i<packg.products.length">,</i></h3>
           <mat-icon matListIcon>edit_attributes</mat-icon>
-          <h4 matLine>{{product.name}}</h4>
-          <p matLine class="demo-2"> {{product.productId}} </p>
+          <h4 matLine>&nbsp;</h4>
+          <p matLine class="demo-2"> &nbsp; </p>
         </mat-list-item>
       </mat-list-item>
-      <p matLine><span><b>Total  :</b><i>&nbsp;{{totalPrice | currency:currentCurrency}}&nbsp;</i>-> <i>&nbsp;{{getDiscountedPrice() | currency:currentCurrency}}&nbsp;</i></span><span class="example-fill-remaining-space"></span><button mat-raised-button color="accent" class="float-right"><span class="mdc-button__ripple">Proceed for Payment</span></button></p>
+      <p matLine>
+        <span>
+          <b>Total  :</b><i [class.strike]="getDiscountedPrice()>0">&nbsp;{{totalPrice | currency:currentCurrency}}&nbsp;</i> &nbsp;<i *ngIf="getDiscountedPrice()>0">->{{getDiscountedPrice() | currency:currentCurrency}}&nbsp;</i></span><span
+        class="example-fill-remaining-space"><br />
+      <p *ngIf="getDiscountedPrice()>0"><b>*</b>{{discountPercentage}}% Winter holidays discount applied, Hurry Up!!</p>
+      </span>
+        <button mat-raised-button color="accent" class="float-right"><span class="mdc-button__ripple">Proceed for Payment</span>
+        </button>
+      </p>
     </mat-list>
   </div>
 </div>

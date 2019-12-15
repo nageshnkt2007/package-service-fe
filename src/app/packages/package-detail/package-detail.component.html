@@ -1,3 +1,21 @@
-<p>
-  package-detail works!
-</p>
+<div class="align-center mar-top20">
+  <div class="card">
+    <img src="https://www.jumblebee.co.uk/site/wp-content/uploads/2014/06/JB-FE-Shop_10.png" alt="ShopImage" style="width:100%;height:50%; ">
+    <h1>{{myPackage.name}}</h1>
+    <p class="price">Total Price :&nbsp;{{myPackage.totalPrice | currency:currentCurrency}}</p>
+    <p>{{myPackage.description}}</p>
+    <h2>Products</h2>
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let pack of myPackage.products">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{pack.name}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <span>Product Id :<b>{{pack.productId}}</b></span> Price: <b>{{pack.basePrice | currency:currentCurrency}}</b>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <p><button mat-raised-button color="primary" (click)="addToCart()"><span class="mdc-button__ripple">Add</span>
+    </button></p>
+  </div>
+</div>

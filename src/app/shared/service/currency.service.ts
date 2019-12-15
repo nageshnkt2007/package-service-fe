@@ -52,4 +52,7 @@ export class CurrencyService {
     console.log('old factor is ='+oldFactor+'new factor is '+newFactor);
     return newFactor/oldFactor;
   }
+  public getFactorOfCurrency(currency: string){
+    return this.currencyRateMap[currency];
+  }
 }

@@ -6,6 +6,8 @@ import {MatSort} from "@angular/material/sort";
 import {CartService} from "../../shared/service/cart.service";
 import {Subscription} from "rxjs";
 import {CurrencyService} from "../../shared/service/currency.service";
+import {PackageService} from "../../shared/service/package.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-package-list',
@@ -13,22 +15,26 @@ import {CurrencyService} from "../../shared/service/currency.service";
   styleUrls: ['./package-list.component.css']
 })
 export class PackageListComponent implements OnInit {
-  ELEMENT_DATA:Package = [
+  ELEMENT_DATA:Package[] = [
     new Package(1,"Premium","This is a dummy package for testing",1200,[new Product(5,"product1","ahdvsa412X#",499)]),
   new Package(5,"Eco Package","Another for testing",3399,[new Product(5,"product1","ahdvsa412X#",499)]),
   new Package(6,"Generak Package","Another for testing",999,[new Product(5,"product1","ahdvsa412X#",499)]),
   new Package(7,"Incedible Package","Another for testing",899,[new Product(5,"product1","ahdvsa412X#",499)])
 ];
-
-  constructor(private cartService:CartService,private currencyService:CurrencyService) {
-    this.currentCurrency = this.currencyService.currentCurrency;
-  }
-
-  dataSource: Package[] = new MatTableDataSource(this.ELEMENT_DATA);
+  dataSource: MatTableDataSource<Package>;
   displayedColumns: string[] = ['name', 'totalPrice','action'];
   currentCurrency:string;
   currencySubscription:Subscription;
+  packageServiceSubscription:Subscription;
+  packagesFromDB:Package[];
+  isBackEndServiceDown:boolean=false;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
+
+  constructor(private cartService:CartService,private currencyService:CurrencyService,
+              private packageService:PackageService,private route:Router) {
+    this.currentCurrency = this.currencyService.currentCurrency;
+    this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+  }
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -39,10 +45,23 @@ export class PackageListComponent implements OnInit {
     this.currencySubscription = this.currencyService.isCurrencyModified.subscribe(value => {
       this.currentCurrency = value;
     });
+    this.packageService.getAllPackages();
+    this.packagesFromDB = this.packageService.packageFromDB;
+    this.packageServiceSubscription = this.packageService.isPackageFromDBModified.subscribe(value => {
+      this.packagesFromDB = value;
+      if(this.packagesFromDB && this.packagesFromDB.length>0){
+        this.dataSource = new MatTableDataSource(this.packagesFromDB);
+      }else{
+        this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+        this.isBackEndServiceDown = true;
+      }
+
+    });
   }
 
   addToCart(value: Package) {
-    this.cartService.addPackage(value);
+    let myClonedObject:Package  = value;
+    this.cartService.addPackage(myClonedObject);
     this.cartService.openSnackBar(value.name+' added to your cart','Checkout');
   }
   deleteItemFunction(item){
@@ -51,6 +70,7 @@ export class PackageListComponent implements OnInit {
   }
 
   goToDetails(pckg: Package) {
+      this.route.navigate(["package/"+pckg.id]);
     console.log(pckg);
   }
 }

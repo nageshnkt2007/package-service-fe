@@ -11,7 +11,7 @@ import {CurrencyService} from "../shared/service/currency.service";
 })
 export class CartComponent implements OnInit {
 
-  itemsInCart:Package=[];
+  itemsInCart:Package[]=[];
   subscription:Subscription;
   totalPrice:number;
   totalSubscription:Subscription;
@@ -32,6 +32,8 @@ export class CartComponent implements OnInit {
   public getDiscountedPrice(){
     if(this.itemsInCart.length>1){
       return this.totalPrice-this.totalPrice/this.discountPercentage;
+    }else{
+      return 0;
     }
   }
 

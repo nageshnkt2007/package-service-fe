@@ -10,9 +10,9 @@ import {CurrencyService} from "./currency.service";
 @Injectable({
   providedIn: 'root'
 })
-export class CartService implements OnInit{
+export class CartService {
 
-  packages:Package=[];
+  packages:Package[]=[];
   ispackagemodified:Subject<Package[]> = new Subject<Package[]>();
   totalItemsInCart:number=0;
   isTotalNumberChanged:Subject<number> = new Subject<number>();
@@ -74,12 +74,13 @@ export class CartService implements OnInit{
   }
 
 
-
-  public removePackage(shopPackage:Package){
+  // To be used for Removal of packages from Cart.
+  /*public removePackage(shopPackage:Package){
     this.packages.pop(shopPackage);
     this.ispackagemodified.next(this.packages);
     this.decreaseItemCount();
-  }
+  }*/
+
   public goToCart(){
     this.router.navigate(["cart"]);
   }

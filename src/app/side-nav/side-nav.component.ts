@@ -23,7 +23,7 @@ export class SideNavComponent implements OnInit{
   packagesSubscription:Subscription;
   currentCurrency:string;
   currencySubscription:Subscription;
-  currencyList:{string:number};
+  currencyList:{};
   currencyRateMapSub:Subscription;
   selectedOption: string ='USD';
 
