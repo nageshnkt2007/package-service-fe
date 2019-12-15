@@ -21,19 +21,23 @@ export class PackageListComponent implements OnInit {
   new Package(6,"Generak Package","Another for testing",999,[new Product(5,"product1","ahdvsa412X#",499)]),
   new Package(7,"Incedible Package","Another for testing",899,[new Product(5,"product1","ahdvsa412X#",499)])
 ];
-  dataSource: MatTableDataSource<Package>;
+  dataSource: MatTableDataSource<Package>= new MatTableDataSource<Package>();
   displayedColumns: string[] = ['name', 'totalPrice','action'];
   currentCurrency:string;
   currencySubscription:Subscription;
   packageServiceSubscription:Subscription;
   packagesFromDB:Package[];
   isBackEndServiceDown:boolean=false;
+  currencyFactor:number=1;
+  factorSubscription:Subscription;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   constructor(private cartService:CartService,private currencyService:CurrencyService,
               private packageService:PackageService,private route:Router) {
     this.currentCurrency = this.currencyService.currentCurrency;
-    this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+    this.currencyFactor = this.currencyService.currencyFactor;
+    console.log('constructer factor is : ',this.currencyFactor);
+    //this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
   }
 
   applyFilter(filterValue: string) {
@@ -41,21 +45,23 @@ export class PackageListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dataSource.sort = this.sort;
+    //fetching all packages from DB
+    this.packageService.getAllPackages(this.currentCurrency);
     this.currencySubscription = this.currencyService.isCurrencyModified.subscribe(value => {
       this.currentCurrency = value;
+      this.packageService.getAllPackages(this.currentCurrency);
+      console.log('currency subscription factor is : ',this.currencyFactor);
     });
-    this.packageService.getAllPackages();
     this.packagesFromDB = this.packageService.packageFromDB;
     this.packageServiceSubscription = this.packageService.isPackageFromDBModified.subscribe(value => {
       this.packagesFromDB = value;
       if(this.packagesFromDB && this.packagesFromDB.length>0){
         this.dataSource = new MatTableDataSource(this.packagesFromDB);
       }else{
-        this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+        //this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
         this.isBackEndServiceDown = true;
       }
-
+      this.dataSource.sort = this.sort;
     });
   }
 
@@ -66,7 +72,16 @@ export class PackageListComponent implements OnInit {
   }
   deleteItemFunction(item){
     this.dataSource.data.splice(this.dataSource.data.indexOf(item.id), 1);
-    this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+    //this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+  }
+  public updatePackageListValue(packageList:Package[]){
+    let myPackageList:Package[]=[];
+    for(let pckg of packageList){
+      var total = pckg.totalPrice*this.currencyFactor;
+      pckg.totalPrice = total;
+      myPackageList.push(pckg);
+    }
+    return myPackageList;
   }
 
   goToDetails(pckg: Package) {

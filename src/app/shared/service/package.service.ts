@@ -21,18 +21,25 @@ export class PackageService {
     });
   }
 
-  public getAllPackages() {
+  public getAllPackages(currency:string) {
+    if(!currency){
+      currency = 'USD';
+    }
     console.log('fetching currency data from backend service');
-    this.http.get("http://localhost:8888/package/all").subscribe(data => {
+    this.http.get("http://localhost:8888/package/all?currency="+currency).subscribe(data => {
       console.log(data);
       // @ts-ignore
       this.isPackageFromDBModified.next(data);
     });
   }
 
-  public getPackage(id:number) {
+  public getPackage(id:number,currency:string) {
     console.log('fetching currency data from backend service');
-    this.http.get("http://localhost:8888/package/get/"+id).subscribe(data => {
+    console.log('fetching package details from DB for currency = ',currency)
+    if(!currency){
+      currency = 'USD';
+    }
+    this.http.get("http://localhost:8888/package/"+id+'?currency='+currency).subscribe(data => {
       console.log(data);
       // @ts-ignore
       this.isCurrentPackageModified.next(data);

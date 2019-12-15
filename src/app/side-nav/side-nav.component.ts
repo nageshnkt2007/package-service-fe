@@ -72,8 +72,7 @@ export class SideNavComponent implements OnInit{
     if(this.packages.length>0){
     this.cartService.setCurrencyFactor(factor);
     let myList:Package[] = this.cartService.updatePackageListValue(this.packages);
-
-      this.cartService.ispackagemodified.next(myList);
+    this.cartService.ispackagemodified.next(myList);
     }
   }
 }

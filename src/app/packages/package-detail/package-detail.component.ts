@@ -23,24 +23,20 @@ export class PackageDetailComponent implements OnInit {
               private currencyService: CurrencyService, private cartService: CartService) {
     this.myPackage = this.packageService.currentPackage;
     this.currentCurrency = this.currencyService.currentCurrency;
+    this.currencyFactor = this.currencyService.currencyFactor;
   }
 
   ngOnInit() {
+    this.packageId = this.route.snapshot.params['id'];
+    this.packageService.getPackage(this.packageId,this.currentCurrency);
     this.subscription = this.packageService.isCurrentPackageModified.subscribe(value => {
       this.myPackage = value;
-      this.modifyPackageValues(this.myPackage);
     });
     this.currencySubscription = this.currencyService.isCurrencyModified.subscribe(value => {
+      this.packageService.getPackage(this.packageId,this.currentCurrency);
       this.currentCurrency = value;
-      console.log('current currency is :', value);
-      let oldFactor = this.currencyFactor;
-      this.currencyFactor = this.currencyService.getFactorOfCurrency(this.currentCurrency);
-      this.currencyFactor = this.currencyFactor / oldFactor;
-      console.log('currency factor is : ', this.currencyFactor);
-      this.modifyPackageValues(this.myPackage);
     });
-    this.packageId = this.route.snapshot.params['id'];
-    this.packageService.getPackage(this.packageId);
+
   }
 
   addToCart() {
@@ -54,6 +50,5 @@ export class PackageDetailComponent implements OnInit {
     for(let product of pckg.products){
       product.basePrice = product.basePrice*this.currencyFactor;
     }
-    //this.myPackage = pckg;
   }
 }

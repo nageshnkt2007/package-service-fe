@@ -43,8 +43,8 @@ export class CartService {
   public addPackage(shopPackage:Package){
     this.packages.push(shopPackage);
     this.increaseItemCount();
-    let myList:Package[]= this.updatePackageListValue(this.packages);
-    this.ispackagemodified.next(myList);
+    //let myList:Package[]= this.updatePackageListValue(this.packages);
+    this.ispackagemodified.next(this.packages);
   }
   public getTotalValue(packageList:Package[]){
     console.log(packageList);
