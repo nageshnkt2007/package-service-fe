@@ -15,12 +15,18 @@
   top: 0;
   z-index: 1;
 }
-a { color: inherit; text-decoration: none;}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 .example-fill-remaining-space {
   /* This fills the remaining space, by using flexbox.
      Every toolbar row uses a flexbox row layout. */
   flex: 1 1 auto;
 }
+
 .badge {
   padding-left: 9px;
   padding-right: 9px;
@@ -33,6 +39,7 @@ a { color: inherit; text-decoration: none;}
 .badge-warning[href] {
   background-color: #c67605;
 }
+
 #lblCartCount {
   font-size: 12px;
   background: #ff0000;

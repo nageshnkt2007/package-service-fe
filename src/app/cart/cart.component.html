@@ -10,8 +10,8 @@
         <h4 matLine>{{packg.name}}  <p class="demo-2"> {{packg.totalPrice| currency:currentCurrency}} </p></h4>
         <mat-divider></mat-divider>
         <mat-list-item>
-          <h3 matSubheader>Products: <span *ngFor="let product of packg.products;let i = index">{{product.name}}</span>
-            <i *ngIf="i<packg.products.length">,</i></h3>
+          <h3 matSubheader>Products:
+          </h3>(<span *ngFor="let product of packg.products;let i = index"><b>{{product.name}}</b>&nbsp;</span>)
           <mat-icon matListIcon>edit_attributes</mat-icon>
           <h4 matLine>&nbsp;</h4>
           <p matLine class="demo-2"> &nbsp; </p>
@@ -19,12 +19,14 @@
       </mat-list-item>
       <p matLine>
         <span>
-          <b>Total  :</b><i [class.strike]="getDiscountedPrice()>0">&nbsp;{{totalPrice | currency:currentCurrency}}&nbsp;</i> &nbsp;<i *ngIf="getDiscountedPrice()>0">->{{getDiscountedPrice() | currency:currentCurrency}}&nbsp;</i></span><span
-        class="example-fill-remaining-space"><br />
+          <b>Total  :</b><i [class.strike]="getDiscountedPrice()>0">&nbsp;{{totalPrice | currency:currentCurrency}}&nbsp;</i> &nbsp;<i
+          *ngIf="getDiscountedPrice()>0">->{{getDiscountedPrice() | currency:currentCurrency}}&nbsp;</i></span><span
+        class="example-fill-remaining-space"><br/>
       <p *ngIf="getDiscountedPrice()>0"><b>*</b>{{discountPercentage}}% Winter holidays discount applied, Hurry Up!!</p>
       </span>
-        <button mat-raised-button color="accent" class="float-right"><span class="mdc-button__ripple">Proceed for Payment</span>
-        </button>
+      <button mat-raised-button color="accent" class="float-right"><span
+        class="mdc-button__ripple">Proceed for Payment</span>
+      </button>
       </p>
     </mat-list>
   </div>

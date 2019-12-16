@@ -5,7 +5,7 @@ export class Package {
   public name: string;
   public description: string;
   public totalPrice: number;
-  public totalBasePrice:number;
+  public totalBasePrice: number;
   public products: Product[];
 
   constructor(id: number, name: string, description: string, totalPrice: number, products: Product[]) {

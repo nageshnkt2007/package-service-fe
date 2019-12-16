@@ -28,12 +28,13 @@ export class PackageDetailComponent implements OnInit {
 
   ngOnInit() {
     this.packageId = this.route.snapshot.params['id'];
-    this.packageService.getPackage(this.packageId,this.currentCurrency);
+    this.packageService.getPackage(this.packageId, this.currentCurrency);
     this.subscription = this.packageService.isCurrentPackageModified.subscribe(value => {
       this.myPackage = value;
     });
     this.currencySubscription = this.currencyService.isCurrencyModified.subscribe(value => {
-      this.packageService.getPackage(this.packageId,this.currentCurrency);
+      this.packageService.getPackage(this.packageId, value);
+      this.myPackage = this.packageService.currentPackage;
       this.currentCurrency = value;
     });
 
@@ -47,8 +48,8 @@ export class PackageDetailComponent implements OnInit {
 
   modifyPackageValues(pckg: Package) {
     pckg.totalPrice = pckg.totalPrice * this.currencyFactor;
-    for(let product of pckg.products){
-      product.basePrice = product.basePrice*this.currencyFactor;
+    for (let product of pckg.products) {
+      product.basePrice = product.basePrice * this.currencyFactor;
     }
   }
 }

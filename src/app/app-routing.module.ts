@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
 import {PackageListComponent} from "./packages/package-list/package-list.component";
 import {PackageDetailComponent} from "./packages/package-detail/package-detail.component";
 import {ErrorComponent} from "./error/error.component";
@@ -8,19 +8,19 @@ import {CartComponent} from "./cart/cart.component";
 
 const routes: Routes = [
   {
-    path:'',component:PackageListComponent
+    path: '', component: PackageListComponent
   },
   {
-    path:'package',component:PackageListComponent
+    path: 'package', component: PackageListComponent
   },
   {
-    path:'package/:id',component:PackageDetailComponent
+    path: 'package/:id', component: PackageDetailComponent
   },
   {
-    path:'cart',component:CartComponent
+    path: 'cart', component: CartComponent
   },
   {
-    path:'404',component:ErrorComponent
+    path: '404', component: ErrorComponent
   }
 ];
 
@@ -28,4 +28,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

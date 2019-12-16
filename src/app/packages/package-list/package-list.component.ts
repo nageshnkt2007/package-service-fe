@@ -15,29 +15,21 @@ import {Router} from "@angular/router";
   styleUrls: ['./package-list.component.css']
 })
 export class PackageListComponent implements OnInit {
-  ELEMENT_DATA:Package[] = [
-    new Package(1,"Premium","This is a dummy package for testing",1200,[new Product(5,"product1","ahdvsa412X#",499)]),
-  new Package(5,"Eco Package","Another for testing",3399,[new Product(5,"product1","ahdvsa412X#",499)]),
-  new Package(6,"Generak Package","Another for testing",999,[new Product(5,"product1","ahdvsa412X#",499)]),
-  new Package(7,"Incedible Package","Another for testing",899,[new Product(5,"product1","ahdvsa412X#",499)])
-];
-  dataSource: MatTableDataSource<Package>= new MatTableDataSource<Package>();
-  displayedColumns: string[] = ['name', 'totalPrice','action'];
-  currentCurrency:string;
-  currencySubscription:Subscription;
-  packageServiceSubscription:Subscription;
-  packagesFromDB:Package[];
-  isBackEndServiceDown:boolean=false;
-  currencyFactor:number=1;
-  factorSubscription:Subscription;
+  dataSource: MatTableDataSource<Package> = new MatTableDataSource<Package>();
+  displayedColumns: string[] = ['name', 'totalPrice', 'action'];
+  currentCurrency: string;
+  currencySubscription: Subscription;
+  packageServiceSubscription: Subscription;
+  packagesFromDB: Package[];
+  isBackEndServiceDown: boolean = false;
+  currencyFactor: number = 1;
+  factorSubscription: Subscription;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private cartService:CartService,private currencyService:CurrencyService,
-              private packageService:PackageService,private route:Router) {
+  constructor(private cartService: CartService, private currencyService: CurrencyService,
+              private packageService: PackageService, private route: Router) {
     this.currentCurrency = this.currencyService.currentCurrency;
     this.currencyFactor = this.currencyService.currencyFactor;
-    console.log('constructer factor is : ',this.currencyFactor);
-    //this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
   }
 
   applyFilter(filterValue: string) {
@@ -50,15 +42,13 @@ export class PackageListComponent implements OnInit {
     this.currencySubscription = this.currencyService.isCurrencyModified.subscribe(value => {
       this.currentCurrency = value;
       this.packageService.getAllPackages(this.currentCurrency);
-      console.log('currency subscription factor is : ',this.currencyFactor);
     });
     this.packagesFromDB = this.packageService.packageFromDB;
     this.packageServiceSubscription = this.packageService.isPackageFromDBModified.subscribe(value => {
       this.packagesFromDB = value;
-      if(this.packagesFromDB && this.packagesFromDB.length>0){
+      if (this.packagesFromDB && this.packagesFromDB.length > 0) {
         this.dataSource = new MatTableDataSource(this.packagesFromDB);
-      }else{
-        //this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+      } else {
         this.isBackEndServiceDown = true;
       }
       this.dataSource.sort = this.sort;
@@ -66,18 +56,19 @@ export class PackageListComponent implements OnInit {
   }
 
   addToCart(value: Package) {
-    let myClonedObject:Package  = value;
+    let myClonedObject: Package = value;
     this.cartService.addPackage(myClonedObject);
-    this.cartService.openSnackBar(value.name+' added to your cart','Checkout');
+    this.cartService.openSnackBar(value.name + ' added to your cart', 'Checkout');
   }
-  deleteItemFunction(item){
+
+  deleteItemFunction(item) {
     this.dataSource.data.splice(this.dataSource.data.indexOf(item.id), 1);
-    //this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
   }
-  public updatePackageListValue(packageList:Package[]){
-    let myPackageList:Package[]=[];
-    for(let pckg of packageList){
-      var total = pckg.totalPrice*this.currencyFactor;
+
+  public updatePackageListValue(packageList: Package[]) {
+    let myPackageList: Package[] = [];
+    for (let pckg of packageList) {
+      var total = pckg.totalPrice * this.currencyFactor;
       pckg.totalPrice = total;
       myPackageList.push(pckg);
     }
@@ -85,7 +76,6 @@ export class PackageListComponent implements OnInit {
   }
 
   goToDetails(pckg: Package) {
-      this.route.navigate(["package/"+pckg.id]);
-    console.log(pckg);
+    this.route.navigate(["package/" + pckg.id]);
   }
 }

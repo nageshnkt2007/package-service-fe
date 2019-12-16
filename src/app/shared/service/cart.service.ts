@@ -12,18 +12,18 @@ import {CurrencyService} from "./currency.service";
 })
 export class CartService {
 
-  packages:Package[]=[];
-  ispackagemodified:Subject<Package[]> = new Subject<Package[]>();
-  totalItemsInCart:number=0;
-  isTotalNumberChanged:Subject<number> = new Subject<number>();
-  totalCartValue:number=0;
-  currentCurrency:string='USD';
-  isCurrencyModified:Subject<string> = new Subject<string>();
-  isTotalValueChanged:Subject<number> = new Subject<number>();
-  currencyFactor:number=1;
+  packages: Package[] = [];
+  ispackagemodified: Subject<Package[]> = new Subject<Package[]>();
+  totalItemsInCart: number = 0;
+  isTotalNumberChanged: Subject<number> = new Subject<number>();
+  totalCartValue: number = 0;
+  currentCurrency: string = 'USD';
+  isCurrencyModified: Subject<string> = new Subject<string>();
+  isTotalValueChanged: Subject<number> = new Subject<number>();
+  currencyFactor: number = 1;
 
-  constructor(private router:Router, public snackBar: MatSnackBar,
-              private currencyService:CurrencyService) {
+  constructor(private router: Router, public snackBar: MatSnackBar,
+              private currencyService: CurrencyService) {
     this.isTotalNumberChanged.subscribe((value => {
       this.totalItemsInCart = value;
     }));
@@ -40,36 +40,32 @@ export class CartService {
     this.currencyFactor = this.currencyService.currencyFactor;
   }
 
-  public addPackage(shopPackage:Package){
+  public addPackage(shopPackage: Package) {
     this.packages.push(shopPackage);
     this.increaseItemCount();
     //let myList:Package[]= this.updatePackageListValue(this.packages);
     this.ispackagemodified.next(this.packages);
   }
-  public getTotalValue(packageList:Package[]){
-    console.log(packageList);
+
+  public getTotalValue(packageList: Package[]) {
     const prop = 'totalPrice';
-    const basePrice ='totalBasePrice';
+    const basePrice = 'totalBasePrice';
     var total = 0;
-    for(let mypackage of packageList){
-      console.log(mypackage.totalPrice);
+    for (let mypackage of packageList) {
       total = total + mypackage.totalPrice;
     }
-    console.log('total before ',total);
-    console.log('currency factor user is ',this.currencyFactor);
-    console.log('total after ',total);
-    console.log('total prooce is = ',total);
     this.isTotalValueChanged.next(total);
     return total
   }
-  public updatePackageListValue(packageList:Package[]){
-    let myPackageList:Package[]=[];
-    for(let pckg of packageList){
-      var total = pckg.totalPrice*this.currencyFactor;
+
+  public updatePackageListValue(packageList: Package[]) {
+    let myPackageList: Package[] = [];
+    for (let pckg of packageList) {
+      var total = pckg.totalPrice * this.currencyFactor;
       pckg.totalPrice = total;
       myPackageList.push(pckg);
     }
-    console.log('updated package list is ',myPackageList)
+    console.log('updated package list is ', myPackageList)
     return myPackageList;
   }
 
@@ -81,14 +77,15 @@ export class CartService {
     this.decreaseItemCount();
   }*/
 
-  public goToCart(){
+  public goToCart() {
     this.router.navigate(["cart"]);
   }
 
-  getTotalCartValue(){
+  getTotalCartValue() {
     return this.totalCartValue;
   }
-  getCurrentCurrency(){
+
+  getCurrentCurrency() {
     return this.currentCurrency;
   }
 
@@ -101,16 +98,16 @@ export class CartService {
   }
 
   public openSnackBar(message: string, action: string) {
-    if (this.totalItemsInCart==2){
+    if (this.totalItemsInCart == 2) {
       message = "Congratulations! we have added a 10% discount for You";
     }
     let snackBarRef = this.snackBar.open(message, action, {
       duration: 4000,
     });
-    snackBarRef.onAction().subscribe(()=> this.goToCart());
+    snackBarRef.onAction().subscribe(() => this.goToCart());
   }
 
-  public setCurrencyFactor(factor:number){
-    this.currencyFactor= factor;
+  public setCurrencyFactor(factor: number) {
+    this.currencyFactor = factor;
   }
 }

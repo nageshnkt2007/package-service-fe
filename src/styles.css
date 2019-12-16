@@ -1,18 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-.font-size-48 { font-size: 48px; }
-.font-size-32{font-size: 14px;}
-.align-center{text-align: center}
-.mar-top20{margin-top: 20px;}
-.content-center{
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.font-size-48 {
+  font-size: 48px;
+}
+
+.font-size-32 {
+  font-size: 14px;
+}
+
+.align-center {
+  text-align: center
+}
+
+.mar-top20 {
+  margin-top: 20px;
+}
+
+.content-center {
   max-width: 960px;
   margin: 0 auto;
 }
+
 .gap {
   margin-right: 40px;
 }
-.float-right{
+
+.float-right {
   float: right;
 }
