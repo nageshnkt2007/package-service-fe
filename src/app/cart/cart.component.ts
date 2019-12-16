@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Package} from "../shared/package.model";
 import {Subscription} from "rxjs";
 import {CartService} from "../shared/service/cart.service";
@@ -9,7 +9,8 @@ import {CurrencyService} from "../shared/service/currency.service";
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit,OnDestroy {
+
 
   itemsInCart: Package[] = [];
   subscription: Subscription;
@@ -46,5 +47,10 @@ export class CartComponent implements OnInit {
     this.totalSubscription = this.cartService.isTotalValueChanged.subscribe(value => {
       this.totalPrice = value;
     });
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+    this.currencySubscription.unsubscribe();
+    this.totalSubscription.unsubscribe();
   }
 }

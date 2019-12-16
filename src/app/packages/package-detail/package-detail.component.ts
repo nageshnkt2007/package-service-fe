@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PackageService} from "../../shared/service/package.service";
 import {Package} from "../../shared/package.model";
 import {Subscription} from "rxjs";
@@ -11,7 +11,7 @@ import {CartService} from "../../shared/service/cart.service";
   templateUrl: './package-detail.component.html',
   styleUrls: ['./package-detail.component.css']
 })
-export class PackageDetailComponent implements OnInit {
+export class PackageDetailComponent implements OnInit,OnDestroy {
   myPackage: Package;
   subscription: Subscription;
   private packageId: number;
@@ -46,10 +46,8 @@ export class PackageDetailComponent implements OnInit {
     this.cartService.openSnackBar(this.myPackage.name + ' added to your cart', 'Checkout');
   }
 
-  modifyPackageValues(pckg: Package) {
-    pckg.totalPrice = pckg.totalPrice * this.currencyFactor;
-    for (let product of pckg.products) {
-      product.basePrice = product.basePrice * this.currencyFactor;
-    }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+    this.currencySubscription.unsubscribe();
   }
 }

@@ -1,6 +1,5 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Package} from "../../shared/package.model";
-import {Product} from "../../shared/product.model";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
 import {CartService} from "../../shared/service/cart.service";
@@ -14,7 +13,7 @@ import {Router} from "@angular/router";
   templateUrl: './package-list.component.html',
   styleUrls: ['./package-list.component.css']
 })
-export class PackageListComponent implements OnInit {
+export class PackageListComponent implements OnInit,OnDestroy {
   dataSource: MatTableDataSource<Package> = new MatTableDataSource<Package>();
   displayedColumns: string[] = ['name', 'totalPrice', 'action'];
   currentCurrency: string;
@@ -77,5 +76,9 @@ export class PackageListComponent implements OnInit {
 
   goToDetails(pckg: Package) {
     this.route.navigate(["package/" + pckg.id]);
+  }
+  ngOnDestroy(): void {
+    this.currencySubscription.unsubscribe();
+    this.packageServiceSubscription.unsubscribe();
   }
 }

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Subject, Subscription} from "rxjs";
+import {Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -33,10 +33,6 @@ export class CurrencyService {
 
   public setCurrentCurrency(value: string) {
     this.isCurrencyModified.next(value);
-  }
-
-  public setCurrencyFactor(value: number) {
-    this.isCurrencyFactorChanged.next(value);
   }
 
   public getFactorForCurrency(currency: string) {

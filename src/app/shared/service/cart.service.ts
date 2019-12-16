@@ -1,9 +1,8 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Router} from "@angular/router";
-import {BreakpointObserver} from "@angular/cdk/layout";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Package} from "../package.model";
-import {Subject, Subscription} from "rxjs";
+import {Subject} from "rxjs";
 import {CurrencyService} from "./currency.service";
 
 
